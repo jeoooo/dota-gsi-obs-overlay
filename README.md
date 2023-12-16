@@ -1,4 +1,5 @@
 # dota-gsi-obs-overlay
+![demo.png](demo.png)
 
 OBS draft overlay using DOTA 2's  gamestate integration.
 Uses [xzion/dota2-gsi](https://github.com/xzion/dota2-gsi) to parse game data.
