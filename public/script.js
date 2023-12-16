@@ -46,9 +46,6 @@ socket.on('dire_bonus_time', function (newdata) {
 });
 
 
-
-
-
 for (let i = 0; i <= 4; i++) {
     let key = `pick${i}_class`;
     socket.on(`radiant_pick:${key}`, function (data) {
@@ -76,6 +73,10 @@ for (let i = 0; i <= 6; i++) {
         document.getElementById(`dire_ban:${key}`).innerText = JSON.stringify(data);
     });
 }
+
+
+
+
 
 
 
