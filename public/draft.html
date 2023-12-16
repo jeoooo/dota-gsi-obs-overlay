@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link href="/dist/output.css" rel="stylesheet"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- 
+        // draft:activeteam
+        // draft:activeteam_time_remaining
+        // draft:dire_bonus_time
+        // draft:pick
+        // draft:radiant_bonus_time
+        // draft:team#:home_team
+        // draft:team#:ban#_class (0-5)
+        // draft:team#:ban#_id (0-5)
+        // draft:team#:pick#_class (0-4)
+        // draft:team#:pick#_id (0-4)
+
+     -->
+
+    <div class="flex flex-row w-screen p-4  border-red-400">
+        <div class="flex flex-col">
+            <div class="flex flex-row">
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="radiant_pick:pick0_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="radiant_pick:pick0_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="radiant_pick:pick1_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="radiant_pick:pick1_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="radiant_pick:pick2_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="radiant_pick:pick2_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="radiant_pick:pick3_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="radiant_pick:pick3_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="radiant_pick:pick4_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="radiant_pick:pick4_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-row object-fill">
+                <div class="w-full bg-black">
+                    <img id="radiant_ban:ban0_class" src="portraits/black_image.png" alt="" srcset=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black ">
+                    <img id="radiant_ban:ban1_class" src="portraits/black_image.png" alt="" srcset=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="radiant_ban:ban2_class" src="portraits/black_image.png" alt="" srcset=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="radiant_ban:ban3_class" src="portraits/black_image.png" alt="" srcset=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="radiant_ban:ban4_class" src="portraits/black_image.png" alt="" srcset=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="radiant_ban:ban5_class" src="portraits/black_image.png" alt="" srcset=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="radiant_ban:ban6_class" src="portraits/black_image.png" alt="" srcset=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+            </div>
+        </div>
+        <div class="relative w-full bg-white border border-black">
+            <div class="absolute left-1/2 top-[36%] transform -translate-x-1/2 -translate-y-[36%]">
+                <div class="flex flex-row justify-center ">
+                    <i class="fa-solid fa-chevron-left h-20"></i>
+                    <p class="px-1 py-1 text-6xl" id="activeteam_time_remaining">0:00</p>
+                    <i class="fa-solid fa-chevron-right h-20"></i>
+                </div>
+            </div>
+            <div class="absolute bottom-0  w-full h-10 mb-4">
+                <div class="flex flex-row  justify-center ">
+                    <p class="text-xl px-12 py-2 bg-black text-white" id="radiant_bonus_time">0:00</p>
+                    <p class=" px-8 py-2 bg-white">BO3</p>
+                    <p class="text-xl px-12 py-2 bg-black text-white" id="dire_bonus_time">0:00</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="flex flex-col   ">
+            <div class="flex flex-row">
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="dire_pick:pick4_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="dire_pick:pick4_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="dire_pick:pick3_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="dire_pick:pick3_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="dire_pick:pick2_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="dire_pick:pick2_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="dire_pick:pick1_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="dire_pick:pick1_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <div class="w-auto">
+                    <div class="media-container">
+                        <video id="dire_pick:pick0_class_video" style="display: none;" autoplay muted loop
+                            class=" w-[600px] h-[200px] object-fill">
+                            <source src="" type="video/webm" />
+                        </video>
+                        <img id="dire_pick:pick0_class_image" src="portraits/black_image.png" alt="Your Image"
+                            class=" w-[600px] h-[200px] object-fill">
+                    </div>
+                </div>
+                <!-- Repeat for each i in your loop, incrementing the number in the ID -->
+            </div>
+            <div class="flex flex-row object-fill">
+                <div class="w-full bg-black">
+                    <img id="dire_ban:ban6_class" src="portraits/black_image.png" alt=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="dire_ban:ban5_class" src="portraits/black_image.png" alt=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="dire_ban:ban4_class" src="portraits/black_image.png" alt=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="dire_ban:ban3_class" src="portraits/black_image.png" alt=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="dire_ban:ban2_class" src="portraits/black_image.png" alt=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="dire_ban:ban1_class" src="portraits/black_image.png" alt=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+                <div class="w-full bg-black">
+                    <img id="dire_ban:ban0_class" src="portraits/black_image.png" alt=""
+                        class="h-12 w-full grayscale opacity-60">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

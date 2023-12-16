@@ -21,7 +21,7 @@ server.events.on('newclient', function (client) {
 
     client.on('newdata', function (newdata) {
         if (newdata) {
-            console.log(newdata);
+            // console.log(newdata);
             io.emit('newdata', newdata); // Emit the newdata to the client
         }
     })
@@ -112,14 +112,14 @@ server.events.on('newclient', function (client) {
                 radiant_bans.forEach(key => {
                     if (team2.hasOwnProperty(key)) {
                         io.emit(`radiant_ban:${key}`, team2[key]);
-                        // console.log(team2[key]);
+                        console.log(team2[key]);
                     }
                 });
 
                 dire_bans.forEach(key => {
                     if (team3.hasOwnProperty(key)) {
                         io.emit(`dire_ban:${key}`, team3[key]);
-                        // console.log(team3[key]);
+                        console.log(team3[key]);
                     }
                 });
 
