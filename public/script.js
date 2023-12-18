@@ -3,24 +3,20 @@ socket.on('newdata', function (newdata) {
     document.getElementById('data').innerText = JSON.stringify(newdata);
 });
 
-function formatTime(timeInSeconds) {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    const formattedTime = `${minutes}:${String(seconds).padStart(2, '0')}`;
-    return formattedTime;
-}
-
 socket.on('activeteam', function (newdata) {
     document.getElementById('activeteam').innerText = newdata;
 });
+
+
+
 socket.on('activeteam_time_remaining', function (newdata) {
-    document.getElementById('activeteam_time_remaining').innerText = formatTime(newdata);
+    document.getElementById('activeteam_time_remaining').innerText = TimeFormatter.formatTime(newdata);
 });
 socket.on('radiant_bonus_time', function (newdata) {
-    document.getElementById('radiant_bonus_time').innerText = formatTime(newdata);
+    document.getElementById('radiant_bonus_time').innerText = TimeFormatter.formatTime(newdata);
 });
 socket.on('dire_bonus_time', function (newdata) {
-    document.getElementById('dire_bonus_time').innerText = formatTime(newdata);
+    document.getElementById('dire_bonus_time').innerText = TimeFormatter.formatTime(newdata);
 });
 
 for (let i = 0; i <= 4; i++) {
