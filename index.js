@@ -20,6 +20,9 @@ var server = new d2gsi({
 app.use(cors()); // Use cors middleware
 app.use(express.static(path.join(__dirname, 'svelte-app/public'))); // Serve static files from Svelte app
 
+
+
+
 server.events.on('newclient', function (client) {
     console.log("New client connection, IP address: " + client.ip);
     if (client.auth && client.auth.token) {

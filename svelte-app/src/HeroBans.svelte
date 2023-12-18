@@ -1,13 +1,14 @@
 <script>
-  export var hero_name = "zuus";
+  // export let hero_name;
+
+  export let filepath;
 </script>
 
 <div class="w-full bg-red-700">
   <img
-    id="radiant_ban:ban0_class"
-    src="portraits/{hero_name}.png"
-    alt=""
+    src={filepath}
+    alt={filepath}
     srcset=""
-    class="h-12 w-full grayscale opacity-60"
+    class="transition h-12 w-full grayscale opacity-60"
   />
 </div>
