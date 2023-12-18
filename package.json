@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:tailwind": "postcss src/tailwind.css -o public/build/tailwind.css",
+    "watch:tailwind": "postcss src/tailwind.css -o public/build/tailwind.css -w"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dota2-gsi": "^1.0.2",
     "express": "^4.18.2",
     "socket.io": "^4.7.2",
