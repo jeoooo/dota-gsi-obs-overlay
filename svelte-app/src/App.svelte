@@ -1,10 +1,10 @@
 <script>
   import e from "cors";
-  import CenterScreen from "./CenterScreen.svelte";
+  import CenterScreen from "./components/CenterScreen.svelte";
 
-  import HeroBans from "./HeroBans.svelte";
+  import HeroBans from "./components/HeroBans.svelte";
 
-  import HeroPick from "./HeroPick.svelte";
+  import HeroPick from "./components/HeroPick.svelte";
 
   import io from "socket.io-client";
 
@@ -123,7 +123,7 @@
     />
     <div class="flex flex-col">
       <div class="flex flex-row">
-        {#each DIRE_PICKS as dire_pick}
+        {#each DIRE_PICKS.reverse() as dire_pick}
           <HeroPick filepath={dire_pick} />
         {/each}
       </div>
