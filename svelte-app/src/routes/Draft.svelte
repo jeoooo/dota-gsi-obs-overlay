@@ -1,22 +1,24 @@
 <script>
   import e from "cors";
   import CenterScreen from "../components/CenterScreen.svelte";
-
   import HeroBans from "../components/HeroBans.svelte";
-
   import HeroPick from "../components/HeroPick.svelte";
-
   import io from "socket.io-client";
 
-  var DRAFT_ACTIVE_TIME_REMAINING; // Define newdata in the component's state
-  var RAW_DATA; // Define newdata in the component's state
+  var DRAFT_ACTIVE_TIME_REMAINING;
+  var RAW_DATA;
   var RADIANT_BONUS_TIME;
   var DIRE_BONUS_TIME;
   var DIRE_BANS = [];
   var RADIANT_BANS = [];
   var DIRE_PICKS = [];
   var RADIANT_PICKS = [];
-  const socket = io("http://localhost:3001"); // Replace with your server URL
+  const socket = io("http://localhost:3001");
+
+  let radiantPicks = Array(5).fill(false);
+  let radiantBans = Array(7).fill(false);
+  let direPicks = Array(5).fill(false);
+  let direBans = Array(7).fill(false);
 
   socket.on("newdata", (data) => {
     DRAFT_ACTIVE_TIME_REMAINING = data.draft.activeteam_time_remaining;
@@ -24,75 +26,56 @@
     DIRE_BONUS_TIME = data.draft.dire_bonus_time;
     RAW_DATA = JSON.stringify(data);
 
-    // Loop for Dire bans
     for (let i = 0; i <= 6; i++) {
-      const banKey = `ban${i}_class`;
-      const banData = data.draft.team3[banKey];
+      const banKeyDire = `ban${i}_class`;
+      const banDataDire = data.draft.team3[banKeyDire];
+      const banKeyRadiant = `ban${i}_class`;
+      const banDataRadiant = data.draft.team2[banKeyRadiant];
 
-      // Check if the ban data is available
-      if (banData) {
-        DIRE_BANS[i] = banData;
+      if (banDataDire) {
+        DIRE_BANS[i] = banDataDire;
       } else {
-        DIRE_BANS[i] = "black_image"; // or any default value if the ban data is not available
+        DIRE_BANS[i] = "black_image";
       }
-    }
 
-    // Loop for Radiant bans
-    for (let i = 0; i <= 6; i++) {
-      const banKey = `ban${i}_class`;
-      const banData = data.draft.team2[banKey];
-
-      // Check if the ban data is available
-      if (banData) {
-        RADIANT_BANS[i] = banData;
+      if (banDataRadiant) {
+        RADIANT_BANS[i] = banDataRadiant;
       } else {
         RADIANT_BANS[i] = "black_image";
       }
     }
 
-    // Loop for Radiant picks
     for (let i = 0; i <= 4; i++) {
-      const pickKey = `pick${i}_class`;
-      const pickData = data.draft.team2[pickKey];
+      const pickKeyDire = `pick${i}_class`;
+      const pickDataDire = data.draft.team3[pickKeyDire];
+      const pickKeyRadiant = `pick${i}_class`;
+      const pickDataRadiant = data.draft.team2[pickKeyRadiant];
 
-      // Check if the ban data is available
-      if (pickData) {
-        RADIANT_PICKS[i] = pickData;
+      if (pickDataDire) {
+        DIRE_PICKS[i] = pickDataDire;
+      } else {
+        DIRE_PICKS[i] = "dota2_logo_animated";
+      }
+
+      if (pickDataRadiant) {
+        RADIANT_PICKS[i] = pickDataRadiant;
       } else {
         RADIANT_PICKS[i] = "dota2_logo_animated";
       }
     }
 
-    // Loop for Dire picks
-    for (let i = 0; i <= 4; i++) {
-      const pickKey = `pick${i}_class`;
-      const pickData = data.draft.team3[pickKey];
+    // Count Dire bans and picks
+    const direBansCount = DIRE_BANS.filter(
+      (ban) => ban !== "black_image"
+    ).length;
+    const direPicksCount = DIRE_PICKS.filter(
+      (pick) => pick !== "dota2_logo_animated"
+    ).length;
 
-      // Check if the ban data is available
-      if (pickData) {
-        DIRE_PICKS[i] = pickData;
-      } else {
-        DIRE_PICKS[i] = "dota2_logo_animated";
-      }
-    }
+    console.log("Dire Bans:", direBansCount);
+    console.log("Dire Picks:", direPicksCount);
 
-    // Create a console table
-    console.table({
-      "Radiant Picks": RADIANT_PICKS,
-      "Radiant Bans": RADIANT_BANS,
-      "Dire Picks": DIRE_PICKS,
-      "Dire Bans": DIRE_BANS,
-    });
-
-    // RADIANT_BANS.forEach((element) => {
-    //   console.log(`portraits/${element}.png`);
-    // });
-    // DIRE_BANS.forEach((element) => {
-    //   console.log(`portraits/${element}.png`);
-    // });
-
-    // console.log(DIRE_BANS);
-    // console.log(RADIANT_PICKS);
+    // Continue with the rest of your logic...
   });
 
   function formatTime(seconds) {
@@ -102,12 +85,16 @@
   }
 </script>
 
-<main>
-  <div class=" flex flex-row w-full p-4 border border-red-400 justify-end">
+<main class="absolute bottom-0">
+  <div class=" flex flex-row w-full p-4 justify-end">
     <div class="flex flex-col">
       <div class="flex flex-row">
-        {#each RADIANT_PICKS as radiant_pick}
-          <HeroPick filepath={radiant_pick} />
+        {#each RADIANT_PICKS as radiant_pick, index (index)}
+          <HeroPick
+            filepath={radiant_pick}
+            hueRotate={"125deg"}
+            isTurn={radiantPicks}
+          />
         {/each}
       </div>
       <div class="flex flex-row object-fill">
@@ -123,8 +110,12 @@
     />
     <div class="flex flex-col">
       <div class="flex flex-row">
-        {#each DIRE_PICKS.reverse() as dire_pick}
-          <HeroPick filepath={dire_pick} />
+        {#each DIRE_PICKS.reverse() as dire_pick, index (index)}
+          <HeroPick
+            filepath={dire_pick}
+            hueRotate={"0deg"}
+            isTurn={direPicks}
+          />
         {/each}
       </div>
       <div class="flex flex-row object-fill">
@@ -133,6 +124,6 @@
         {/each}
       </div>
     </div>
-    <!-- <pre>{RAW_DATA && JSON.stringify(JSON.parse(RAW_DATA), null, 2)}</pre> -->
   </div>
 </main>
+<!-- <pre>{RAW_DATA && JSON.stringify(JSON.parse(RAW_DATA), null, 2)}</pre> -->
