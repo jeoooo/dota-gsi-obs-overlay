@@ -1,6 +1,4 @@
 <script>
-  import HeroItems from "./HeroItems.svelte";
-
   import io from "socket.io-client";
 
   var RAW_DATA;
@@ -12,6 +10,11 @@
       player_stats: {},
       hero_abilities: {},
       hero_items: {},
+      net_worth: {},
+      gpm: {},
+      xpm: {},
+      hero_damage: {},
+      hero_healing: {},
     },
   ];
   const socket = io("http://localhost:3001"); // Replace with your server URL
@@ -34,10 +37,95 @@
     return parts.join("_");
   }
 
+  function formatNumber(num) {
+    return num.toLocaleString("en-US");
+  }
+
+  /**
+   *
+   * code for bottle interaction
+   *
+   * will specify filename for bottle especially if
+   *
+   * 1. it contains a specific rune
+   * 2. bottle charges
+   *
+   */
+  function getBottleImage(item) {
+    let filename;
+    if (item.contains_rune && item.contains_rune !== "empty") {
+      filename = `assets/items/item_bottle_${item.contains_rune}.png`;
+    } else {
+      switch (item.charges) {
+        case 3:
+          filename = "assets/items/item_bottle.png";
+          break;
+        case 2:
+          filename = "assets/items/item_bottle_2.png";
+          break;
+        case 1:
+          filename = "assets/items/item_bottle_1.png";
+          break;
+        default:
+          filename = "assets/items/item_bottle_empty.png";
+      }
+    }
+    // console.log(filename);
+    return filename;
+  }
+
+  function setItem(slot) {
+    if (slot.name === "item_bottle") {
+      return `assets/items/black_image.png`;
+    }
+    if (slot.name === "empty") {
+      return `assets/items/black_image.png`;
+    }
+
+    if (slot.name === "item_bottle") {
+      let filename;
+      if (slot.contains_rune && slot.contains_rune !== "empty") {
+        filename = `assets/items/item_bottle_${slot.contains_rune}.png`;
+      } else {
+        switch (slot.charges) {
+          case 3:
+            filename = "assets/items/item_bottle.png";
+            break;
+          case 2:
+            filename = "assets/items/item_bottle_2.png";
+            break;
+          case 1:
+            filename = "assets/items/item_bottle_1.png";
+            break;
+          default:
+            filename = "assets/items/item_bottle_empty.png";
+        }
+      }
+      return filename;
+    } else {
+      return `assets/items/${slot.name}.png`;
+    }
+  }
+  const DOTA_RADIANT_PLAYER_COLORS = [
+    "#3074F9",
+    "#66FFC0",
+    "#BD00B7",
+    "#F8F50A",
+    "#FF6901",
+  ];
+  const DOTA_DIRE_PLAYER_COLORS = [
+    "#FF88C5",
+    "#A2B349",
+    "#63DAFA",
+    "#01831F",
+    "#9F6B00",
+  ];
+
   socket.on("newdata", (data) => {
     RAW_DATA = JSON.stringify(data);
     // CLOCK_TIME = formatTime(data.map.clock_time);
     PLAYERS = [];
+
     for (let team = 2; team <= 3; team++) {
       const startPlayer = team === 2 ? 0 : 5;
       const endPlayer = team === 2 ? 4 : 9;
@@ -59,6 +147,8 @@
             net_worth: playerData.net_worth,
             gpm: playerData.gpm,
             xpm: playerData.xpm,
+            hero_damage: playerData.hero_damage,
+            hero_healing: playerData.hero_healing,
           });
         }
       }
@@ -74,147 +164,280 @@
 
     console.table(PLAYERS);
   });
-
-  function formatNumber(num) {
-    return num.toLocaleString("en-US");
-  }
 </script>
 
-{#if PLAYERS[7] && PLAYERS[7].hero_items && PLAYERS[7].hero_items.slot0}
-  <div class="flex flex-col border border-rose-500">
-    <div class="flex bg-red-300 items-center justify-evenly">
-      <div class="flex w-full bg-orange-300">Team 1</div>
-      <div class="flex w-full bg-orange-300">Team 2</div>
+<!-- TEAMS -->
+<div class="flex flex-row justify-evenly border p-1 bg-blue-400">
+  <div class="border border-red-400 w-full p-2 m-2">
+    <div class="flex flex-row justify-start items-end">
+      <img
+        class="h-14 w-max bg-emerald-900"
+        src="assets/Gladiators_2022_allmode.png"
+        alt=""
+        srcset=""
+      />
+      <p class="bg-emerald-400 ml-4">Gaimin Gladiators</p>
     </div>
-    <div class="flex justify-evenly">
-      <!-- radiant hero -->
-      <div class="flex flex-row justify-start m-3 items-center">
-        <!-- items -->
-        <HeroItems
-          item0={`assets/items/${PLAYERS[7].hero_items.slot0.name}.png`}
-          item1={`assets/items/${PLAYERS[7].hero_items.slot1.name}.png`}
-          item2={`assets/items/${PLAYERS[7].hero_items.slot2.name}.png`}
-          item3={`assets/items/${PLAYERS[7].hero_items.slot3.name}.png`}
-          item4={`assets/items/${PLAYERS[7].hero_items.slot4.name}.png`}
-          item5={`assets/items/${PLAYERS[7].hero_items.slot5.name}.png`}
-          neutral_item={`assets/items/${PLAYERS[7].hero_items.neutral0.name}.png`}
-        />
-        <div class="flex w-max px-4">
-          <div class="flex flex-row w-fit h-fit ml-4 items-center">
-            <div
-              class="flex flex-col h-fit w-fill text-white px-3 justify-center"
-            >
-              <div class="inline-flex bg-slate-700">NETWORTH</div>
-              <div class="bg-slate-700">
-                {formatNumber(PLAYERS[7].net_worth)}
-              </div>
-              <div class="bg-slate-700 flex flex-row">
-                <div class="flex flex-col m-2">
-                  <p>gpm</p>
-                  <p>{formatNumber(PLAYERS[7].gpm)}</p>
-                </div>
-                <div class="flex flex-col m-2">
-                  <p>xpm</p>
-                  <p>{formatNumber(PLAYERS[7].xpm)}</p>
-                </div>
-              </div>
-            </div>
-            <div
-              class="flex flex-col h-fit w-fill text-white px-2 py-2 justify-center"
-            >
-              <div class="inline-flex bg-slate-700">HERO DAMAGE</div>
-              <div class="bg-slate-700">123,456</div>
-              <div class=" bg-slate-700">HERO HEALING</div>
-              <div class="bg-slate-700">123,456</div>
-            </div>
-            <div
-              class="flex flex-col h-fit w-fill text-white px-2 py-2 justify-center"
-            >
-              <div class="inline-flex bg-slate-700">K/D/A</div>
-              <div class="bg-slate-700">1/2/3</div>
-              <div class="inline-flex bg-slate-700">LH / D</div>
-              <div class="bg-slate-700">123,456</div>
-            </div>
-            <div
-              class="flex flex-col h-fit w-fill text-white px-2 py-2 justify-center"
-            >
-              <div class="bg-slate-700">player_name</div>
-              <div class="bg-slate-700">hero_name</div>
-            </div>
+  </div>
+  <div class="border border-red-400 w-full p-2 m-2">
+    <div class="flex flex-row-reverse justify-start items-end">
+      <img
+        class="h-14 w-max bg-rose-900"
+        src="assets/Gladiators_2022_allmode.png"
+        alt=""
+        srcset=""
+      />
+      <p class="bg-rose-400 mr-4">Gaimin Gladiators</p>
+    </div>
+  </div>
+</div>
+<!-- SCOREBOARD -->
+<div class="flex flex-row my-2">
+  <!-- RADIANT SIDE -->
+
+  <div class="flex flex-col w-full">
+    {#each PLAYERS.splice(0, 5) as player, i (player)}
+      <div class="flex flex-row my-1">
+        <!-- hero portrait -->
+
+        <div
+          class="w-[256px] h-fill flex flex-row justify-end"
+          style="background-color: {DOTA_RADIANT_PLAYER_COLORS[i]}"
+        >
+          <img
+            class="pl-3 w-[256px]"
+            src="/portraits/{formatHeroName(player.hero)}.png"
+            alt=""
+            srcset=""
+          />
+        </div>
+
+        <!-- PLAYER NAME AND LEVEL -->
+        <div class="flex flex-col w-[200px] ml-2 justify-center">
+          <h1 class="font-bold">{player.name}</h1>
+          <h1>
+            LVL {player.hero_stats.level}
+            {formatHeroName(player.hero).toUpperCase()}
+          </h1>
+        </div>
+        <!-- NW AND CURRENT GOLD -->
+        <div class="flex flex-row ml-2 justify-center">
+          <div class="flex flex-col justify-center m-2">
+            <h1>NW</h1>
+            {formatNumber(player.net_worth)}
+            <h1>Current Gold</h1>
+            <h1>000,000</h1>
+          </div>
+          <!-- LAST HITS/DENIES  -->
+          <div class="flex flex-col justify-center m-2">
+            <h1>LH/D</h1>
+            <h1>
+              {player.player_stats.last_hits}/{player.player_stats.denies}
+            </h1>
           </div>
         </div>
-        <div class="flex flex-row h-fit w-fit">
-          <img class="h-20 w-full" src="portraits/luna.png" alt="" srcset="" />
-          <div class="bg-red-600 w-2"></div>
+        <!-- GPM XPM -->
+        <div class="flex flex-row ml-2 justify-center">
+          <div class="flex flex-col justify-center m-2">
+            <h1>GPM</h1>
+            <h1>000,000</h1>
+            <h1>XPM</h1>
+            <h1>000,000</h1>
+          </div>
         </div>
-      </div>
-      <div class="flex justify-evenly">
-        <!-- dire hero -->
-        <div class="flex flex-row w-full justify-start m-3 items-center">
-          <div class="flex flex-row h-fit w-fit">
-            <div class="bg-teal-600 w-2"></div>
+        <!-- items -->
+        <div class="flex flex-row ml-2 justify-center">
+          <div class="flex flex-col justify-center w-fit h-full">
             <img
-              class="h-20 w-full"
-              src="portraits/tusk.png"
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot0 && player.hero_items.slot0.name
+                ? setItem(player.hero_items.slot0)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot3 && player.hero_items.slot3.name
+                ? setItem(player.hero_items.slot3)
+                : `assets/items/black_image.png`}
               alt=""
               srcset=""
             />
           </div>
-
-          <div class="flex w-max px-4">
-            <div class="flex flex-row w-fit h-fit mr-4 items-center">
-              <!-- player data -->
-              <div
-                class="flex flex-col h-fit w-fill text-white px-2 py-2 justify-center"
-              >
-                <div class="bg-slate-700">player_name</div>
-                <div class="bg-slate-700">hero_name</div>
-              </div>
-              <!-- kda lhd -->
-              <div
-                class="flex flex-col h-fit w-fill text-white px-2 py-2 justify-center"
-              >
-                <div class="inline-flex bg-slate-700">K/D/A</div>
-                <div class="bg-slate-700">1/2/3</div>
-                <div class="inline-flex bg-slate-700">LH / D</div>
-                <div class="bg-slate-700">123,456</div>
-              </div>
-
-              <!-- hero dmg/healing -->
-              <div
-                class="flex flex-col h-fit w-fill text-white px-2 py-2 justify-center"
-              >
-                <div class="inline-flex bg-slate-700">HERO DAMAGE</div>
-                <div class="bg-slate-700">123,456</div>
-                <div class="inline-flex bg-slate-700">HERO HEALING</div>
-                <div class="bg-slate-700">123,456</div>
-              </div>
-              <!-- nw gpm xpm -->
-              <div
-                class="flex flex-col h-fit w-fill text-white px-3 justify-center"
-              >
-                <div class="inline-flex bg-slate-700">NETWORTH</div>
-                <div class="bg-slate-700">123,456</div>
-                <div class="bg-slate-700 flex flex-row">
-                  <div class="flex flex-col m-2">
-                    <p>gpm</p>
-                    <p>999</p>
-                  </div>
-                  <div class="flex flex-col m-2">
-                    <p>xpm</p>
-                    <p>999</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="flex flex-col justify-center w-fit h-full">
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot1 && player.hero_items.slot1.name
+                ? setItem(player.hero_items.slot1)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot4 && player.hero_items.slot4.name
+                ? setItem(player.hero_items.slot4)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
           </div>
-          <!-- items -->
-          <HeroItems isRadiant={false} />
+          <div class="flex flex-col justify-center w-fit h-full">
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot2 && player.hero_items.slot2.name
+                ? setItem(player.hero_items.slot2)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot5 && player.hero_items.slot5.name
+                ? setItem(player.hero_items.slot5)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+          </div>
+          <!-- neutral item -->
+          <div class="flex flex-col justify-center self-center w-14 h-12 m-2">
+            <img
+              class="h-full w-full rounded-full bg-black object-cover"
+              src={player.hero_items.neutral0 && player.hero_items.neutral0.name
+                ? setItem(player.hero_items.neutral0)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- center me-->
+    {/each}
   </div>
-{/if}
+
+  <!-- DIRE SIDE -->
+  <div class="flex flex-col w-full">
+    {#each PLAYERS.splice(0, 5) as player, i (player)}
+      <div class="flex flex-row my-1">
+        <!-- hero portrait -->
+
+        <div
+          class="w-[256px] h-fill flex flex-row justify-end"
+          style="background-color: {DOTA_DIRE_PLAYER_COLORS[i]}"
+        >
+          <img
+            class="pl-3 w-[256px]"
+            src="/portraits/{formatHeroName(player.hero)}.png"
+            alt=""
+            srcset=""
+          />
+        </div>
+
+        <!-- PLAYER NAME AND LEVEL -->
+        <div class="flex flex-col w-[200px] ml-2 justify-center">
+          <h1 class="font-bold">{player.name}</h1>
+          <h1>
+            LVL {player.hero_stats.level}
+            {formatHeroName(player.hero).toUpperCase()}
+          </h1>
+        </div>
+        <!-- NW AND CURRENT GOLD -->
+        <div class="flex flex-row ml-2 justify-center">
+          <div class="flex flex-col justify-center m-2">
+            <h1>NW</h1>
+            {formatNumber(player.net_worth)}
+            <h1>Current Gold</h1>
+            <h1>000,000</h1>
+          </div>
+          <!-- LAST HITS/DENIES  -->
+          <div class="flex flex-col justify-center m-2">
+            <h1>LH/D</h1>
+            <h1>
+              {player.player_stats.last_hits}/{player.player_stats.denies}
+            </h1>
+          </div>
+        </div>
+        <!-- GPM XPM -->
+        <div class="flex flex-row ml-2 justify-center">
+          <div class="flex flex-col justify-center m-2">
+            <h1>GPM</h1>
+            <h1>000,000</h1>
+            <h1>XPM</h1>
+            <h1>000,000</h1>
+          </div>
+        </div>
+        <!-- items -->
+        <div class="flex flex-row ml-2 justify-center">
+          <div class="flex flex-col justify-center w-fit h-full">
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot0 && player.hero_items.slot0.name
+                ? setItem(player.hero_items.slot0)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot3 && player.hero_items.slot3.name
+                ? setItem(player.hero_items.slot3)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+          </div>
+          <div class="flex flex-col justify-center w-fit h-full">
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot1 && player.hero_items.slot1.name
+                ? setItem(player.hero_items.slot1)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot4 && player.hero_items.slot4.name
+                ? setItem(player.hero_items.slot4)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+          </div>
+          <div class="flex flex-col justify-center w-fit h-full">
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot2 && player.hero_items.slot2.name
+                ? setItem(player.hero_items.slot2)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+            <img
+              class="h-[64px] w-[88px] border bg-black"
+              src={player.hero_items.slot5 && player.hero_items.slot5.name
+                ? setItem(player.hero_items.slot5)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+          </div>
+          <!-- neutral item -->
+          <div class="flex flex-col justify-center self-center w-14 h-12 m-2">
+            <img
+              class="h-full w-full rounded-full bg-black object-cover"
+              src={player.hero_items.neutral0 && player.hero_items.neutral0.name
+                ? setItem(player.hero_items.neutral0)
+                : `assets/items/black_image.png`}
+              alt=""
+              srcset=""
+            />
+          </div>
+        </div>
+      </div>
+    {/each}
+  </div>
+</div>
 <!-- <pre>{RAW_DATA && JSON.stringify(JSON.parse(RAW_DATA), null, 2)}</pre> -->
