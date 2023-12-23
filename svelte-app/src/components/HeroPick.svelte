@@ -10,12 +10,12 @@
 
 {#if filepath == "dota2_logo_animated" || filepath == "undefined"}
   <div class="w-auto">
-    <div class="media-container" style="position: relative;">
+    <div class="media-container bg-black" style="position: relative;">
       <video
         autoplay
         muted
         loop
-        class="w-[200px] h-[225px] object-fill hue-rotate-[{hueRotate}] animate-fade-in-out {isTurn
+        class="w-[200px] h-[256px] object-fill hue-rotate-[{hueRotate}] animate-fade-in-out {isTurn
           ? 'grayscale-0'
           : 'grayscale'}"
         style="transition: filter 0.3s ease-in-out; z-index: 1;"
@@ -31,7 +31,7 @@
         autoplay
         muted
         loop
-        class="w-[200px] h-[225px] object-fill animate-fade-in"
+        class="w-[200px] h-[256px] object-fill animate-fade-in"
         style="transition: filter 0.3s ease-in-out; z-index: 2;"
       >
         <source

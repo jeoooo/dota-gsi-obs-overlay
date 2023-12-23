@@ -9,6 +9,6 @@
     src={filepath}
     alt={filepath}
     srcset=""
-    class="transition h-12 w-full grayscale opacity-60"
+    class="transition h-14 w-full grayscale opacity-60"
   />
 </div>
