@@ -15,16 +15,16 @@
    *
    */
 
-  let state = "none";
-  export let filepath = "assets/dota2_logo_animated.mp4";
-  let hueRotate;
-  let isTurn;
-  if (filepath == "none") {
-    state = "none";
-  }
+  export let hero_name;
+  let filename =
+    hero_name !== "none" && hero_name !== "banning"
+      ? ``
+      : `assets/dota2_logo_animated.mp4`;
+  let filepath = `videos/npc_dota_hero_${filename}.webm`;
+  var hueRotate;
 </script>
 
-{#if state == "none"}
+{#if hero_name == "none"}
   <div class="w-full h-full bg-black">
     <video
       autoplay
@@ -33,10 +33,10 @@
       class="w-146.74px] h-[219.57px] object-fill animate-fade-in grayscale"
       style="transition: filter 0.3s ease-in-out; z-index: 2;"
     >
-      <source src="assets/dota2_logo_animated.mp4" type="video/webm" />
+      <source src={"assets/dota2_logo_animated.mp4"} type="video/webm" />
     </video>
   </div>
-{:else if state == "picking" && isTurn == "radiant"}
+{:else if hero_name == "picking"}
   <div class="w-full h-full bg-black">
     <video
       autoplay
@@ -47,30 +47,6 @@
     >
       <source src={filepath} type="video/webm" />
       <!-- <source src="assets/dota2_logo_animated.mp4" type="video/webm" /> -->
-    </video>
-  </div>
-{:else if state == "picking" && isTurn == "dire"}
-  <div class="w-full h-full bg-black">
-    <video
-      autoplay
-      muted
-      loop
-      class="w-146.74px] h-[219.57px] object-fill {hueRotate}"
-      style="transition: filter 0.3s ease-in-out; z-index: 2;"
-    >
-      <source src={filepath} type="video/webm" />
-    </video>
-  </div>
-{:else if state == "picked"}
-  <div class="w-full h-full bg-black">
-    <video
-      autoplay
-      muted
-      loop
-      class="w-146.74px] h-[219.57px] object-fill animate-fade-in"
-      style="transition: filter 0.3s ease-in-out; z-index: 2;"
-    >
-      <source src={filepath} type="video/webm" />
     </video>
   </div>
 {/if}

@@ -1,34 +1,48 @@
 <script>
   import CenterScreen2 from "../components/CenterScreen2.svelte";
   import HeroBans2 from "./../components/HeroBans2.svelte";
-  import e from "cors";
-  import CenterScreen from "../components/CenterScreen.svelte";
-  import HeroBans from "../components/HeroBans.svelte";
-  import HeroPick from "../components/HeroPick.svelte";
   import io from "socket.io-client";
   import HeroPick2 from "../components/HeroPick2.svelte";
 
-  var DRAFT_ACTIVE_TIME_REMAINING;
-  var RAW_DATA;
-  var RADIANT_BONUS_TIME;
-  var DIRE_BONUS_TIME;
-  var DIRE_BANS = [];
-  var RADIANT_BANS = [];
-  var DIRE_PICKS = [];
-  var RADIANT_PICKS = [];
-  var activeTeam;
   const socket = io("http://localhost:3001");
 
-  let radiantPicks = Array(5).fill(false);
-  let radiantBans = Array(7).fill(false);
-  let direPicks = Array(5).fill(false);
-  let direBans = Array(7).fill(false);
+  let DRAFT_ACTIVE_TIME_REMAINING = "";
+  let RADIANT_BONUS_TIME = "";
+  let DIRE_BONUS_TIME = "";
+  let RAW_DATA = "";
+  let activeTeam = "";
+  let phase = "";
+  let radiantState = "";
+  let direState = "";
+  let radiantPicks = [];
+  let direPicks = [];
+  let radiantBans = [];
+  let direBans = [];
+  let DIRE_BANS = [];
+  let RADIANT_BANS = [];
+  let DIRE_PICKS = [];
+  let RADIANT_PICKS = [];
 
-  var phase;
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  }
+
+  function logVariables() {
+    console.table({
+      "Draft Active Time Remaining": formatTime(DRAFT_ACTIVE_TIME_REMAINING),
+      "Radiant Bonus Time": formatTime(RADIANT_BONUS_TIME),
+      "Dire Bonus Time": formatTime(DIRE_BONUS_TIME),
+      "Active Team": activeTeam,
+      "Current Phase": phase,
+      "Radiant State": radiantState,
+      "Dire State": direState,
+      "Radiant Picks": radiantPicks,
+      "Dire Picks": direPicks,
+      "Radiant Bans": radiantBans,
+      "Dire Bans": direBans,
+    });
   }
 
   socket.on("newdata", (data) => {
@@ -36,14 +50,6 @@
     RADIANT_BONUS_TIME = data.draft.radiant_bonus_time;
     DIRE_BONUS_TIME = data.draft.dire_bonus_time;
     RAW_DATA = JSON.stringify(data);
-
-    let radiantState = "none";
-    let direState = "none";
-
-    let radiantBans = Array(7).fill(false);
-    let radiantPicks = Array(5).fill(false);
-    let direBans = Array(7).fill(false);
-    let direPicks = Array(5).fill(false);
 
     activeTeam = data.draft.activeteam === 2 ? "radiant" : "dire";
     const isPickPhase = data.draft.pick;
@@ -59,7 +65,6 @@
         DIRE_BANS[i] = banDataDire;
         direState = banDataDire;
         direBans[i] = banDataDire;
-        // console.log(`Dire team banned: ${banDataDire}`);
       } else {
         DIRE_BANS[i] = "black_image";
         direState = phase;
@@ -70,7 +75,6 @@
         RADIANT_BANS[i] = banDataRadiant;
         radiantState = banDataRadiant;
         radiantBans[i] = banDataRadiant;
-        // console.log(`Radiant team banned: ${banDataRadiant}`);
       } else {
         RADIANT_BANS[i] = "black_image";
         radiantState = phase;
@@ -78,7 +82,6 @@
       }
     }
 
-    // If the active team is radiant and the current phase is banning, set the nearest index to banning
     if (activeTeam === "radiant" && phase === "banning") {
       const nextRadiantBanIndex = radiantBans.findIndex(
         (ban) => ban === "none"
@@ -88,7 +91,6 @@
       }
     }
 
-    // If the active team is dire and the current phase is banning, set the nearest index to banning
     if (activeTeam === "dire" && phase === "banning") {
       const nextDireBanIndex = direBans.findIndex((ban) => ban === "none");
       if (nextDireBanIndex !== -1) {
@@ -106,7 +108,6 @@
         DIRE_PICKS[i] = pickDataDire;
         direState = pickDataDire;
         direPicks[i] = pickDataDire;
-        // console.log(`Dire team picked: ${pickDataDire}`);
       } else if (direPicks[i] !== "picking") {
         DIRE_PICKS[i] = "dota2_logo_animated";
         direState = phase;
@@ -117,7 +118,6 @@
         RADIANT_PICKS[i] = pickDataRadiant;
         radiantState = pickDataRadiant;
         radiantPicks[i] = pickDataRadiant;
-        // console.log(`Radiant team picked: ${pickDataRadiant}`);
       } else if (radiantPicks[i] !== "picking") {
         RADIANT_PICKS[i] = "dota2_logo_animated";
         radiantState = phase;
@@ -125,7 +125,6 @@
       }
     }
 
-    // If the active team is radiant and the current phase is picking, set the nearest index to picking
     if (activeTeam === "radiant" && phase === "picking") {
       const nextRadiantPickIndex = radiantPicks.findIndex(
         (pick) => pick === "none"
@@ -135,7 +134,6 @@
       }
     }
 
-    // If the active team is dire and the current phase is picking, set the nearest index to picking
     if (activeTeam === "dire" && phase === "picking") {
       const nextDirePickIndex = direPicks.findIndex((pick) => pick === "none");
       if (nextDirePickIndex !== -1) {
@@ -143,89 +141,25 @@
       }
     }
 
-    // TODO: remove?
-    const direBansCount = direBans.filter(Boolean).length;
-    const direPicksCount = direPicks.filter(Boolean).length;
-
-    console.table({
-      "Draft Active Time Remaining": formatTime(DRAFT_ACTIVE_TIME_REMAINING),
-      "Radiant Bonus Time": formatTime(RADIANT_BONUS_TIME),
-      "Dire Bonus Time": formatTime(DIRE_BONUS_TIME),
-      "Active Team": activeTeam,
-      "Current Phase": phase,
-      "Radiant State": radiantState,
-      "Dire State": direState,
-
-      "Radiant Picks": radiantPicks,
-      "Dire Picks": direPicks,
-      "Radiant Bans": radiantBans,
-      "Dire Bans": direBans,
-    });
+    // logVariables();
   });
+  // logVariables();
 </script>
 
-<!-- <main class="absolute bottom-0">
-  <div class=" flex flex-row w-full p-4 justify-end">
-    <div class="flex flex-col">
-      <div class="flex flex-row">
-        {#each RADIANT_PICKS as radiant_pick, index (index)}
-          <HeroPick
-            filepath={radiant_pick}
-            hueRotate={"125deg"}
-            isTurn={radiantPicks}
-          />
-        {/each}
-      </div>
-      <div class="flex flex-row object-fill">
-        {#each RADIANT_BANS as radiant_ban}
-          <HeroBans filepath={`portraits/${radiant_ban}.png`} />
-        {/each}
-      </div>
-    </div>
-    <CenterScreen
-      active_team_time_remaining={formatTime(DRAFT_ACTIVE_TIME_REMAINING)}
-      radiant_bonus_time={formatTime(RADIANT_BONUS_TIME)}
-      dire_bonus_time={formatTime(DIRE_BONUS_TIME)}
-    />
-    <div class="flex flex-col">
-      <div class="flex flex-row">
-        {#each DIRE_PICKS.reverse() as dire_pick, index (index)}
-          <HeroPick
-            filepath={dire_pick}
-            hueRotate={"0deg"}
-            isTurn={direPicks}
-          />
-        {/each}
-      </div>
-      <div class="flex flex-row object-fill">
-        {#each DIRE_BANS.reverse() as dire_ban}
-          <HeroBans filepath={`portraits/${dire_ban}.png`} />
-        {/each}
-      </div>
-    </div>
-  </div>
-</main> -->
-<!-- <pre>{RAW_DATA && JSON.stringify(JSON.parse(RAW_DATA), null, 2)}</pre> -->
 <div class="relative h-screen w-screen">
   <div class="absolute bottom-0 w-full h-[500px] flex items-end">
     <div class="flex flex-row w-full px-3 pb-3">
       <div class="flex flex-row w-full">
         <div class="flex flex-col w-full">
           <div class="flex flex-row">
-            <HeroPick2 />
-            <HeroPick2 />
-            <HeroPick2 />
-            <HeroPick2 />
-            <HeroPick2 />
+            {#each radiantPicks as pick, index}
+              <HeroPick2 hero_name={pick} />
+            {/each}
           </div>
           <div class="flex flex-row bg-black">
-            <HeroBans2 state="banning" />
-            <HeroBans2 state="none" />
-            <HeroBans2 />
-            <HeroBans2 />
-            <HeroBans2 />
-            <HeroBans2 />
-            <HeroBans2 />
+            {#each radiantBans as ban, index}
+              <HeroBans2 hero_name={ban} />
+            {/each}
           </div>
         </div>
         <CenterScreen2
@@ -236,23 +170,14 @@
         />
         <div class="flex flex-col w-full">
           <div class="flex flex-row">
-            <HeroPick2 state="picking" />
-            <HeroPick2
-              state="picked"
-              filepath="videos/npc_dota_hero_ancient_apparition.webm"
-            />
-            <HeroPick2 />
-            <HeroPick2 />
-            <HeroPick2 />
+            {#each direPicks as pick, index}
+              <HeroPick2 hero_name={pick} />
+            {/each}
           </div>
-          <div class="flex flex-row">
-            <HeroBans2 state="banning" />
-            <HeroBans2 state="none" />
-            <HeroBans2 />
-            <HeroBans2 />
-            <HeroBans2 />
-            <HeroBans2 />
-            <HeroBans2 />
+          <div class="flex flex-row-reverse bg-black">
+            {#each direBans as ban, index}
+              <HeroBans2 hero_name={ban} />
+            {/each}
           </div>
         </div>
       </div>
