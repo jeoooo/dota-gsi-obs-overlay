@@ -15,7 +15,7 @@
         autoplay
         muted
         loop
-        class="w-[200px] h-[256px] object-fill hue-rotate-[{hueRotate}] animate-fade-in-out {isTurn
+        class="w-[200px] h-[256px] object-fill hue-rotate-[{hueRotate}] animate-fade-in {isTurn
           ? 'grayscale-0'
           : 'grayscale'}"
         style="transition: filter 0.3s ease-in-out; z-index: 1;"
