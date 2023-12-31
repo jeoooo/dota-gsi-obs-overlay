@@ -20,7 +20,7 @@
         />
       {/if}
 
-      <p class="text-5xl activeteam_time_remaining">
+      <p class="text-5xl activeteam_time_remaining text-black">
         {activeteam_time_remaining}
       </p>
       {#if turn == "dire"}
@@ -33,15 +33,15 @@
   <div class="absolute bottom-0 w-full bg-orange-500">
     <div class="flex flex-row">
       <div class="w-full bg-emerald-400">
-        <div class="flex flex-col mb-2 pl-2">
-          <p class="text-xl">RESERVE_TIME</p>
-          <p class="text-2xl">{radiant_bonus_time}</p>
+        <div class="flex flex-col pl-2">
+          <p class="text-sm reserve_time text-black">RESERVE TIME</p>
+          <p class="text-2xl reserve_time text-black">{radiant_bonus_time}</p>
         </div>
       </div>
       <div class="w-full bg-red-500">
-        <div class="flex flex-col items-end mb-2 pr-2">
-          <p class="text-xl">RESERVE_TIME</p>
-          <p class="text-2xl">{dire_bonus_time}</p>
+        <div class="flex flex-col items-end pr-2">
+          <p class="text-sm reserve_time text-black">RESERVE TIME</p>
+          <p class="text-2xl reserve_time text-black">{dire_bonus_time}</p>
         </div>
       </div>
     </div>

@@ -5,7 +5,9 @@
 {#if hero_name == "banning" && hero_name != "none"}
   <div class="relative w-full h-full bg-red-600 animate-fade-in">
     <img class="h-[55px] w-full grayscale" src="" alt="" />
-    <div class="absolute inset-0 bg-red-600 opacity-60"></div>
+    <div
+      class="banning-inner-shadow absolute inset-0 bg-red-600 opacity-60"
+    ></div>
     <img
       class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[80%] h-[28px] pulse"
       src="assets/cross.png"
@@ -43,6 +45,9 @@
 
 <style>
   .inner-shadow {
+    box-shadow: inset 0 0 24px 10px #000000;
+  }
+  .banning-inner-shadow {
     box-shadow: inset 0 0 24px 10px #000000;
   }
 
