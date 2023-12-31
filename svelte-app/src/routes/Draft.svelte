@@ -153,12 +153,12 @@
         <div class="flex flex-col w-full">
           <div class="flex flex-row">
             {#each radiantPicks as pick, index}
-              <HeroPick2 hero_name={pick} />
+              <HeroPick2 hero_name={pick} key={index} />
             {/each}
           </div>
           <div class="flex flex-row bg-black">
             {#each radiantBans as ban, index}
-              <HeroBans2 hero_name={ban} />
+              <HeroBans2 hero_name={ban} key={index} />
             {/each}
           </div>
         </div>
@@ -171,12 +171,12 @@
         <div class="flex flex-col w-full">
           <div class="flex flex-row">
             {#each direPicks as pick, index}
-              <HeroPick2 hero_name={pick} />
+              <HeroPick2 hero_name={pick} key={index} />
             {/each}
           </div>
           <div class="flex flex-row-reverse bg-black">
             {#each direBans as ban, index}
-              <HeroBans2 hero_name={ban} />
+              <HeroBans2 hero_name={ban} key={index} />
             {/each}
           </div>
         </div>
