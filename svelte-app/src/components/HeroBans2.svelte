@@ -4,7 +4,6 @@
 
 {#if hero_name == "banning" && hero_name != "none"}
   <div class="relative w-full h-full bg-red-600 animate-fade-in">
-    <img class="h-[55px] w-full grayscale" src="" alt="" />
     <div
       class="banning-inner-shadow absolute inset-0 bg-red-600 opacity-60"
     ></div>
@@ -12,6 +11,7 @@
       class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[80%] h-[28px] pulse"
       src="assets/cross.png"
       alt="assets/cross.png"
+      onerror="this.style.display='none'"
     />
     <p
       class="banning-font absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center mb-[4px] text-white text-[10px] font-bold pulse"
