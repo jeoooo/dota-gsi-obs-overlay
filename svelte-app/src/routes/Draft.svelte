@@ -141,7 +141,7 @@
       }
     }
 
-    // logVariables();
+    logVariables();
   });
   // logVariables();
 </script>
@@ -156,7 +156,7 @@
               <HeroPick2 hero_name={pick} key={index} />
             {/each}
           </div>
-          <div class="flex flex-row bg-black">
+          <div class="flex flex-row bg-red-600">
             {#each radiantBans as ban, index}
               <HeroBans2 hero_name={ban} key={index} />
             {/each}
@@ -169,14 +169,14 @@
           dire_bonus_time={formatTime(DIRE_BONUS_TIME)}
         />
         <div class="flex flex-col w-full">
-          <div class="flex flex-row">
+          <div class="flex flex-row-reverse">
             {#each direPicks as pick, index}
-              <HeroPick2 hero_name={pick} key={index} />
+              <HeroPick2 hero_name={pick} pickIndex={index} />
             {/each}
           </div>
-          <div class="flex flex-row-reverse bg-black">
+          <div class="flex flex-row-reverse bg-red-600">
             {#each direBans as ban, index}
-              <HeroBans2 hero_name={ban} key={index} />
+              <HeroBans2 hero_name={ban} />
             {/each}
           </div>
         </div>

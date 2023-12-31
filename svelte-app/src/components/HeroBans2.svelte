@@ -64,7 +64,7 @@
   }
 
   .animate-fade-in {
-    animation: fadeIn 0.5s ease-in;
+    animation: fadeIn 0.2s ease-in;
   }
 
   /* Apply the pulse animation to elements with the pulse class */
