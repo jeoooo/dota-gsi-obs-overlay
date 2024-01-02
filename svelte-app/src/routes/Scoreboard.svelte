@@ -256,6 +256,7 @@
               alt=""
               srcset=""
             />
+
             <img
               class="h-[64px] w-[88px] border bg-black"
               src={player.hero_items.slot3 && player.hero_items.slot3.name
@@ -440,4 +441,11 @@
     {/each}
   </div>
 </div>
+
 <!-- <pre>{RAW_DATA && JSON.stringify(JSON.parse(RAW_DATA), null, 2)}</pre> -->
+
+<style>
+  .inner-shadow {
+    box-shadow: inset 0 0 24px 10px #000000;
+  }
+</style>

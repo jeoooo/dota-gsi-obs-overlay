@@ -32,9 +32,9 @@
 {/if}
 
 {#if hero_name != "none" && hero_name != "banning"}
-  <div class=" relative w-full h-full bg-red-600 animate-fade-in">
+  <div class=" relative w-full h-full bg-red-600">
     <img
-      class="  h-[55px] w-full grayscale contrast-125"
+      class="  h-[55px] w-full grayscale contrast-125 animate-fade-in"
       src="portraits/{hero_name}.png"
       alt=""
     />
@@ -94,10 +94,10 @@
 
   @keyframes fadeIn {
     0% {
-      opacity: 0;
+      opacity: 1;
     }
     100% {
-      opacity: 1;
+      opacity: 0;
     }
   }
 
