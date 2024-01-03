@@ -124,6 +124,8 @@
   socket.on("newdata", (data) => {
     RAW_DATA = JSON.stringify(data);
     // CLOCK_TIME = formatTime(data.map.clock_time);
+
+    // Assuming players have unique IDs
     PLAYERS = [];
 
     for (let team = 2; team <= 3; team++) {
@@ -138,11 +140,11 @@
 
         if (playerData && heroData) {
           PLAYERS.push({
+            id: `${team}-${player}`, // Assuming players have unique IDs
             name: playerData.name,
             hero: heroData.name,
             hero_stats: heroData,
             player_stats: playerData,
-            // hero_abilities: abilitiesData,
             hero_items: itemsData,
             net_worth: playerData.net_worth,
             gpm: playerData.gpm,
@@ -196,13 +198,13 @@
   <!-- RADIANT SIDE -->
 
   <div class="flex flex-col w-full">
-    {#each PLAYERS.splice(0, 5) as player, i (player)}
+    {#each PLAYERS.splice(0, 5) as player (player.id)}
       <div class="flex flex-row my-1">
         <!-- hero portrait -->
 
         <div
           class="w-[256px] h-fill flex flex-row justify-end"
-          style="background-color: {DOTA_RADIANT_PLAYER_COLORS[i]}"
+          style="background-color: {DOTA_RADIANT_PLAYER_COLORS[player.id]}"
         >
           <img
             class="pl-3 w-[256px]"
@@ -320,13 +322,13 @@
 
   <!-- DIRE SIDE -->
   <div class="flex flex-col w-full">
-    {#each PLAYERS.splice(0, 5) as player, i (player)}
+    {#each PLAYERS.splice(0, 5) as player (player.id)}
       <div class="flex flex-row my-1">
         <!-- hero portrait -->
 
         <div
           class="w-[256px] h-fill flex flex-row justify-end"
-          style="background-color: {DOTA_DIRE_PLAYER_COLORS[i]}"
+          style="background-color: {DOTA_DIRE_PLAYER_COLORS[player.id]}"
         >
           <img
             class="pl-3 w-[256px]"
