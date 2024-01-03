@@ -14,7 +14,7 @@
       onerror="this.style.display='none'"
     />
     <p
-      class="banning-font absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center mb-[4px] text-white text-[10px] font-bold pulse"
+      class="banning-font tracking-[.25em] absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center mb-[4px] text-white text-[10px] font-bold pulse"
     >
       BANNING
     </p>
