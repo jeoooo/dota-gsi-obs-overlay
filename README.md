@@ -7,15 +7,29 @@ OBS Browser source Streaming tools for DOTA 2 using game state integration
 
 ## Features
 
-- Realtime data parsing from  the DOTA 2 client 
-- Web GUI draft screen
-- Open source and customizable! (uses svelte as its frontend framework)
-- Scoreboard stats **(to be updated)**
+The DOTA 2 GSI Overlay is a streaming tool meticulously crafted to elevate DOTA 2 live broadcasts by seamlessly integrating real-time game information. 
+
+Leveraging the power of the Game State Integration (GSI) feature within the DOTA 2 client, this overlay provides broadcasters with dynamic and up-to-the-moment data from the ongoing matches.
+
+### Key Features
+- **Real-time Updates:** The overlay taps into the DOTA 2 Game State Integration, offering broadcasters instantaneous updates on critical in-game events such as draft phase details, active teams, and the current game state.
+
+- **Web GUI with Node.js:** At the heart of the project is a robust web-based Graphical User Interface (GUI) powered by Node.js. This backend component facilitates the communication with the DOTA 2 client and ensures the seamless parsing of game data.
+
+- **Data Parsing with xzion/dota2gsi:** The project intelligently utilizes the xzion/dota2gsi library, enhancing the parsing of data from the DOTA 2 client. This library acts as a bridge, enabling effective communication between the game and the overlay.
+
+- **Frontend with Svelte Framework:** The frontend of the GUI is meticulously crafted using the Svelte framework. This choice ensures a highly responsive and interactive user experience, enabling broadcasters to effortlessly navigate and utilize the overlay during live broadcasts.
+
+- **Real-time Data Parsing with Websockets:** To achieve real-time data parsing and updates, the overlay employs Websockets. This technology ensures a continuous and efficient flow of information from the DOTA 2 client to the overlay, enabling broadcasters to provide a dynamic and engaging stream.
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [License](#license)
+- [DOTA 2 GSI OVERLAY](#dota-2-gsi-overlay)
+  - [Features](#features)
+    - [Key Features](#key-features)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Resources](#resources)
 
 ## Installation
 
@@ -82,7 +96,8 @@ For more information, see the [CS:GO GameState Integration page](https://develop
 
 ## Resources
 
-- [DOTA 2 Game State Integration](https://github.com/xzion/dota2-gsi)
-- [Valve Game State Integraton for CSGO](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration)
+- [DOTA 2 Game State Integration NodeJS library by xzion](https://github.com/xzion/dota2-gsi)
+- [qqquiu/dota2-webdraft: Dota 2 web-rendered picks and bans screen using dota2-gsi](https://github.com/qqquiu/dota2-webdraft)
+- [Game State Integration fundamentals: Valve Game State Integraton for CSGO](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration)
 - [OBS Studio (for streaming the draft web GUI)](link_to_obs_studio)
 
