@@ -112,7 +112,7 @@
         DIRE_PICKS[i] = pickDataDire;
         direState = pickDataDire;
         direPicks[i] = pickDataDire;
-      } else if (direPicks[i] !== "picking") {
+      } else {
         DIRE_PICKS[i] = "dota2_logo_animated";
         direState = phase;
         direPicks[i] = "none";
@@ -122,7 +122,7 @@
         RADIANT_PICKS[i] = pickDataRadiant;
         radiantState = pickDataRadiant;
         radiantPicks[i] = pickDataRadiant;
-      } else if (radiantPicks[i] !== "picking") {
+      } else {
         RADIANT_PICKS[i] = "dota2_logo_animated";
         radiantState = phase;
         radiantPicks[i] = "none";
@@ -145,7 +145,7 @@
       }
     }
 
-    // logVariables();
+    logVariables();
   });
   // logVariables();
 </script>

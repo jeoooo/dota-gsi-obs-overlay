@@ -2,7 +2,23 @@
   export let hero_name;
 </script>
 
-{#if hero_name == "picking" || hero_name == "none"}
+<!-- picking and not none -->
+{#if hero_name == "picking" && hero_name != "none"}
+  <div class="w-full h-full bg-black">
+    <video
+      autoplay
+      muted
+      loop
+      class={`w-[146.74px] h-[219.57px] object-fill `}
+      style="transition: filter 0.3s ease-in-out; z-index: 2;"
+    >
+      <source src="assets/dota2_logo_animated.mp4" type="video/webm" />
+    </video>
+  </div>
+{/if}
+
+<!-- none and not picking -->
+{#if hero_name == "none" && hero_name != "picking"}
   <div class="w-full h-full bg-black">
     <video
       autoplay
