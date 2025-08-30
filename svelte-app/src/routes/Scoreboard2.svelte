@@ -17,7 +17,7 @@
       hero_healing: {},
     },
   ];
-  const socket = io("http://localhost:3001"); // Replace with your server URL
+  const socket = io(`http://${window.location.hostname}:3001`); // Replace with your server URL
 
   function formatTime(seconds) {
     seconds = Math.abs(seconds);

@@ -4,7 +4,7 @@
   import io from "socket.io-client";
   import HeroPick2 from "../components/HeroPick2.svelte";
 
-  const socket = io("http://localhost:3001");
+  const socket = io(`http://${window.location.hostname}:3001`);
 
   let DRAFT_ACTIVE_TIME_REMAINING = "";
   let RADIANT_BONUS_TIME = "";
